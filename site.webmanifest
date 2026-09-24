@@ -1,0 +1,17 @@
+{
+  "name": "Atelier Sereno — Mobile massage Medellín",
+  "short_name": "Atelier Sereno",
+  "description": "Professional mobile massage in Provenza and El Poblado, Medellín.",
+  "start_url": "/index.html?lang=es",
+  "display": "standalone",
+  "background_color": "#f4efe6",
+  "theme_color": "#161410",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
