@@ -1,11 +1,11 @@
 {
-  "name": "Atelier Sereno — Mobile massage Medellín",
-  "short_name": "Atelier Sereno",
-  "description": "Professional mobile massage in Provenza and El Poblado, Medellín.",
-  "start_url": "/index.html?lang=es",
+  "name": "Orux Wellness — Masajes a domicilio Medellín",
+  "short_name": "Orux Wellness",
+  "description": "Masajes terapéuticos y de bienestar a domicilio en Medellín y alrededores.",
+  "start_url": "/atelier-sereno/index.html?lang=es",
   "display": "standalone",
-  "background_color": "#f4efe6",
-  "theme_color": "#161410",
+  "background_color": "#0b0b0b",
+  "theme_color": "#0b0b0b",
   "lang": "es",
   "icons": [
     {

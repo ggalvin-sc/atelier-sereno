@@ -1,14 +1,18 @@
 /*
-  Site configuration for Atelier Sereno.
-  Set email, phone, hours, maps, and the public URL here.
+  Site configuration for Orux Wellness.
+  Brand, WhatsApp booking, Instagram, hours, maps, and the public URL.
 */
 
 const SITE = {
-  brand: "Atelier Sereno",
-  legalName: "Atelier Sereno — Masaje a domicilio Medellín",
-  phoneDisplay: "+57 300 000 0000",
-  phoneTel: "+573000000000",
-  email: "reservas@ateliersereno.com",
+  brand: "Orux Wellness",
+  legalName: "Orux Wellness — Masajes terapéuticos a domicilio Medellín",
+  tagline: "Tu bienestar, nuestra prioridad",
+  phoneDisplay: "+57 324 270 0150",
+  phoneTel: "+573242700150",
+  whatsapp: "https://wa.me/573242700150",
+  instagram: "https://www.instagram.com/orux.wellness/",
+  instagramHandle: "@orux.wellness",
+  email: "",
   city: "Medellín",
   region: "Antioquia",
   country: "CO",
@@ -22,7 +26,7 @@ const SITE = {
     lastBookingMinute: 0,
     days: "everyday"
   },
-  origin: "https://ateliersereno.com",
+  origin: "https://ggalvin-sc.github.io/atelier-sereno",
   areas: {
     provenza: {
       name: "Provenza",
@@ -43,9 +47,8 @@ const SITE = {
   }
 };
 
-function mailtoUrl(subject, body) {
+function whatsappUrl(text) {
   const q = new URLSearchParams();
-  if (subject) q.set("subject", subject);
-  if (body) q.set("body", body);
-  return `mailto:${SITE.email}?${q.toString()}`;
+  if (text) q.set("text", text);
+  return `${SITE.whatsapp}?${q.toString()}`;
 }

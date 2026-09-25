@@ -1,5 +1,5 @@
 /*
-  Shared front-end for every Atelier Sereno page.
+  Shared front-end for every Orux Wellness page.
   Functions:
   - detectDevice(): adds is-mobile / is-desktop on <html>.
   - getLang() / setLang(): URL, storage, then browser language.
@@ -7,12 +7,12 @@
   - applyTranslations(): fills [data-i18n] and page SEO from data-page.
   - updateSeo(): title, meta, Open Graph, hreflang for this file path.
   - updateJsonLd(): MassageTherapist schema (home and contact).
-  - updateContactHrefs(): email and tel links from SITE.
+  - updateContactHrefs(): WhatsApp, Instagram, and tel links from SITE.
   - updateHoursStatus(): open/closed pill in America/Bogota.
   - bindLanguageSwitch(): language <select>, keeps ?lang= on this page.
   - bindLangAwareLinks(): appends current lang to internal .js-lang links.
   - markActiveNav(): aria-current on the matching nav item.
-  - bindBookingForm(): opens mailto with the form text (no server).
+  - bindBookingForm(): opens WhatsApp with the form text (no server).
   - initMaps(): Provenza and El Poblado embeds.
   - initYear(): footer year.
   - boot(): runs the above on DOMContentLoaded.
@@ -81,9 +81,30 @@
       const previous = areaSelect.value;
       const provenza = areaSelect.querySelector('[value="provenza"]');
       const poblado = areaSelect.querySelector('[value="poblado"]');
+      const other = areaSelect.querySelector('[value="other"]');
       if (provenza) provenza.textContent = pack.formAreaProvenza;
       if (poblado) poblado.textContent = pack.formAreaPoblado;
+      if (other) other.textContent = pack.formAreaOther;
       areaSelect.value = previous;
+    }
+
+    const serviceSelect = document.getElementById("service");
+    if (serviceSelect) {
+      const previous = serviceSelect.value;
+      const labels = {
+        any: pack.formServiceAny,
+        relax: pack.svc1Title,
+        deep: pack.svc2Title,
+        couples: pack.svc3Title,
+        group: pack.svc4Title,
+        facial: pack.svc5Title,
+        iv: pack.svc6Title
+      };
+      Object.keys(labels).forEach((value) => {
+        const option = serviceSelect.querySelector(`[value="${value}"]`);
+        if (option) option.textContent = labels[value];
+      });
+      serviceSelect.value = previous;
     }
 
     updateSeo(lang, pack);
@@ -140,7 +161,7 @@
       image: `${SITE.origin}/images/luxury-bath.jpg`,
       url: pageUrl(document.documentElement.getAttribute("data-lang") || "es"),
       telephone: SITE.phoneTel,
-      email: SITE.email,
+      sameAs: [SITE.instagram, SITE.whatsapp],
       priceRange: "$$",
       currenciesAccepted: "COP",
       paymentAccepted: "Cash, Bank Transfer",
@@ -197,9 +218,13 @@
   }
 
   function updateContactHrefs() {
-    document.querySelectorAll(".js-email").forEach((el) => {
-      el.setAttribute("href", `mailto:${SITE.email}`);
-      if (el.id === "email-display") el.textContent = SITE.email;
+    document.querySelectorAll(".js-whatsapp").forEach((el) => {
+      el.setAttribute("href", SITE.whatsapp);
+      if (el.id === "whatsapp-display") el.textContent = SITE.phoneDisplay;
+    });
+    document.querySelectorAll(".js-instagram").forEach((el) => {
+      el.setAttribute("href", SITE.instagram);
+      if (el.id === "instagram-display") el.textContent = SITE.instagramHandle;
     });
     document.querySelectorAll(".js-phone").forEach((el) => {
       el.setAttribute("href", `tel:${SITE.phoneTel}`);
@@ -251,7 +276,7 @@
   function bindLangAwareLinks(lang) {
     document.querySelectorAll("a.js-lang").forEach((link) => {
       const raw = link.getAttribute("data-href") || link.getAttribute("href");
-      if (!raw || raw.startsWith("mailto:") || raw.startsWith("tel:") || raw.startsWith("http")) return;
+      if (!raw || raw.startsWith("mailto:") || raw.startsWith("tel:") || raw.startsWith("http") || raw.startsWith("https://wa.me")) return;
       const url = new URL(raw, window.location.href);
       url.searchParams.set("lang", lang);
       link.setAttribute("href", `${url.pathname}${url.search}${url.hash}`);
@@ -275,22 +300,38 @@
       event.preventDefault();
       const name = (document.getElementById("name").value || "").trim();
       const area = document.getElementById("area").value;
+      const service = document.getElementById("service") ? document.getElementById("service").value : "any";
       const when = (document.getElementById("when").value || "").trim();
       const notes = (document.getElementById("notes").value || "").trim();
       if (!name || !area || !when) {
         window.alert(t("required"));
         return;
       }
-      const areaLabel = area === "provenza" ? t("formAreaProvenza") : t("formAreaPoblado");
+      const areaLabels = {
+        provenza: t("formAreaProvenza"),
+        poblado: t("formAreaPoblado"),
+        other: t("formAreaOther")
+      };
+      const serviceLabels = {
+        any: t("formServiceAny"),
+        relax: t("svc1Title"),
+        deep: t("svc2Title"),
+        couples: t("svc3Title"),
+        group: t("svc4Title"),
+        facial: t("svc5Title"),
+        iv: t("svc6Title")
+      };
       const body = [
+        t("formSubject"),
         `${t("formName")}: ${name}`,
-        `${t("formArea")}: ${areaLabel}`,
+        `${t("formArea")}: ${areaLabels[area] || area}`,
+        `${t("formService")}: ${serviceLabels[service] || service}`,
         `${t("formWhen")}: ${when}`,
         notes ? `${t("formNotes")}: ${notes}` : ""
       ]
         .filter(Boolean)
         .join("\n");
-      window.location.href = mailtoUrl(t("formSubject"), body);
+      window.location.href = whatsappUrl(body);
     });
   }
 

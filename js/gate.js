@@ -42,7 +42,7 @@
     gate.id = "site-gate";
     gate.innerHTML = [
       '<div class="gate-card">',
-      '  <p class="gate-kicker">Atelier Sereno</p>',
+      '  <p class="gate-kicker">Orux Wellness</p>',
       '  <h1 class="gate-title">Vista previa</h1>',
       '  <p class="gate-lead">Escribe la contraseña para abrir el sitio.</p>',
       '  <form id="gate-form" class="gate-form" autocomplete="current-password">',
